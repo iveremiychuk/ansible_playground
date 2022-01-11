@@ -17,7 +17,7 @@
               - curl
               - gnupg
               - lsb-release
-            update-cache: yes
+            update-cache: true
             cache_valid_time: 86400
 
         - name: adding docker key
@@ -25,11 +25,40 @@
             url: https://download.docker.com/linux/ubuntu/gpg
             state: present
 
-        - name: add stsable repo
+        - name: add stable repo
           apt_repository:
             repo: >
               deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] 
               https://download.docker.com/linux/ubuntu   {{ ansible_distribution_release }} stable
             state: present
-            update-cache: yes
-            
+            update-cache: true
+            filename: docker
+
+        - name: installing docker-ce
+          apt:
+            name: docker-ce
+            update-cache: true
+        
+        - name: check docker state
+          service:
+            name: docker
+            state: restarted
+            enabled: true
+      become: true            
+
+    - name: installing Docker-compose
+      block:
+        - name: download Docker-compose
+          uri:
+            url: https://api.github.com/repos/docker/compose/releases/latest
+            body_format: json
+          register: page
+        
+        - name : final settings
+          block:
+            - name: add user to docker group
+              user:
+                name: "{{ ansible_user }}"
+                groups: docker
+                append: true
+                
