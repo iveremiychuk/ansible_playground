@@ -1,0 +1,2 @@
+[ubuntu_server_test_2]
+192.168.31.111 ansible_user=ubuntu ansible_become=true

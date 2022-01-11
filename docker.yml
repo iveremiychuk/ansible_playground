@@ -1,12 +1,12 @@
 ---
 - name: preconfiguration
-  hosts: test2
+  hosts: ubuntu_server_test_1
   tasks:
     - name: установка docker
       block:
-        - name: add universe rep
+        - name: adding universe repo
           apt_repository:
-            repo: "deb htpp://us.archive.ubuntu.com/ubuntu/ {{ ansible_distribtuion release }} universe"
+            repo: "deb http://us.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} universe"
             state: present
 
         - name: installing additional packages
@@ -28,8 +28,9 @@
         - name: add stable repo
           apt_repository:
             repo: >
-              deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] 
-              https://download.docker.com/linux/ubuntu   {{ ansible_distribution_release }} stable
+              deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+              https://download.docker.com/linux/ubuntu
+              {{ ansible_distribution_release }} stable
             state: present
             update-cache: true
             filename: docker
@@ -38,13 +39,13 @@
           apt:
             name: docker-ce
             update-cache: true
-        
+
         - name: check docker state
           service:
             name: docker
             state: restarted
             enabled: true
-      become: true            
+      become: true
 
     - name: installing Docker-compose
       block:
@@ -53,12 +54,23 @@
             url: https://api.github.com/repos/docker/compose/releases/latest
             body_format: json
           register: page
-        
-        - name : final settings
-          block:
-            - name: add user to docker group
-              user:
-                name: "{{ ansible_user }}"
-                groups: docker
-                append: true
-                
+
+
+        - name: installing docker-compose
+          get_url:
+            url: "https://github.com/docker/compose/releases/download/{{ page.json.tag_name }}/docker-compose-Linux-x86_64"
+            dest: /usr/local/bin/docker-compose
+            mode: 0755
+      become: true
+
+    - name: final settings
+      block:
+        - name: add user to docker group
+          user:
+            name: "{{ ansible_user }}"
+            groups: docker
+            append: true
+
+#        #- name: rebooting
+#          reboot:
+#      #become: true
