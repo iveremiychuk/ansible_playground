@@ -24,7 +24,7 @@
           apt_key:
             url: https://download.docker.com/linux/ubuntu/gpg
             state: present
-
+            keyring: /usr/share/keyrings/docker-archive-keyring.gpg
         - name: add stable repo
           apt_repository:
             repo: >
