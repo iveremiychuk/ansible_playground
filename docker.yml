@@ -1,6 +1,6 @@
 ---
 - name: preconfiguration
-  hosts: ubuntu_server_test_1
+  hosts: cluster
   tasks:
     - name: установка docker
       block:
@@ -71,6 +71,6 @@
             groups: docker
             append: true
 
-#        #- name: rebooting
-#          reboot:
-#      #become: true
+        - name: rebooting
+          reboot:
+      become: true

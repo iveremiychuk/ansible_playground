@@ -20,6 +20,7 @@ Vagrant.configure("2") do |config|
 				v.memory = 2048
 				v.cpus = 1
 				v.customize ["modifyvm", :id, "--uartmode1", "disconnected"] # avoid VBoxManage.exe crit error (COM_part ini fail)
+				v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"] # DNS host resolver for NAT
 			end
 		end
 	end
