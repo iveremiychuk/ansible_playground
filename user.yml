@@ -1,8 +1,0 @@
----
-- hosts: test2
-  name: user
-  tasks:
-    - name: create user
-      user:
-        name: support
-        state: present
