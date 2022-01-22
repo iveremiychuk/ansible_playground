@@ -1,4 +1,13 @@
-argument_specs:
-  main:
-    short_description: Настройка серверов для работы с Docker
-    author: Veremiychuk Ivan (A. Larichev stepik course)
+galaxy_info:
+  role_name: preconf
+  description: Настройка серверов для работы с Docker
+  author: Veremiychuk Ivan (A. Larichev stepik course)
+  license: MIT
+  min_ansible_version: 2.12.1
+  platforms:
+    - name: Ubuntu
+      versions:
+        - All
+dependencies:
+  - role: deploy
+  
