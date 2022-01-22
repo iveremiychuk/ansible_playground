@@ -1,3 +1,6 @@
 ---
-- name: Demo
-  command: echo "DEMO"
+- name: Deploy task
+  command: "echo {{ test }} && exit 0"
+  register: res
+- debug:
+    var: res
