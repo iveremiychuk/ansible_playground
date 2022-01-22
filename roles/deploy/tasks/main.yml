@@ -2,5 +2,4 @@
 - name: Deploy task
   command: "echo {{ test }} && exit 0"
   register: res
-- debug:
-    var: res
+  changed_when: "'0' not in res.stdout"
