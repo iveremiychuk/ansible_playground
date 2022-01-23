@@ -6,7 +6,6 @@
       tags: preconf
     - role: deploy
       tags: deploy
-      test: 0
     # - deploy
     # - swarm_init
 
