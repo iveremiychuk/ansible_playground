@@ -1,15 +1,17 @@
 ---
 - name: Clone repo
   ansible.builtin.git:
-    repo: 'https://github.com/AlariCode/docker-demo.git'
-    dest: /home/vagrant/docker
-    version: block-7
+    repo: "https://github.com/AlariCode/docker-demo.git"
+    dest: "{{ git_folder }}"
+    version: block-14
 
 - name: Build image
   community.docker.docker_image:
     name: "{{ registry_name }}{{ item.name }}"
     tag: "{{ item.version }}"
     push: true
+    force_source: true
+    force_tag: true
     build:
       path: "{{ git_folder }}"
       dockerfile: "{{ git_folder }}/apps/{{ item.name }}/Dockerfile"
