@@ -19,7 +19,7 @@
     - role: swarm_join
       type: manager
       tags: swarm_join
-    # - swarm_join
+
 
 - name: Worker
   hosts: workers
@@ -29,5 +29,11 @@
     - role: swarm_join
       type: worker
       tags: swarm_join
-    # - swarm_join
-  
+  post_tasks:
+    - name: Cleang token directory
+      file: 
+        path:  ./tokens
+        state: absent
+      ignore_errors: true
+      delegate_to: localhost
+      tags: swarm_join
