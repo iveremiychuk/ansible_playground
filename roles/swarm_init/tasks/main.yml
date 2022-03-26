@@ -5,23 +5,23 @@
     advertise_addr: "{{ advertise_addr }}"
   register: token
 
-- name: check directory
-  file:
-    path: ./tokens
-    state: directory
-    mode: '0777'
-  delegate_to: localhost
+- name: Save tokens
+  set_fact:
+    token_manager: "{{ token.swarm_facts.JoinTokens.Manager }}"
+    token_worker: "{{ token.swarm_facts.JoinTokens.Worker }}"
+    cacheable: yes
 
-- name: save manager token
-  copy:
-    dest: ./tokens/token-manager
-    content: "{{ token.swarm_facts.JoinTokens.Manager }}"
-    mode: '0777'
-  delegate_to: localhost
 
-- name: save worker token
-  copy:
-    dest: ./tokens/token-worker
-    content: "{{ token.swarm_facts.JoinTokens.Worker }}"
-    mode: '0777'
-  delegate_to: localhost
+# - name: save manager token
+#   copy:
+#     dest: ./tokens/token-manager
+#     content: "{{ token.swarm_facts.JoinTokens.Manager }}"
+#     mode: '0777'
+#   delegate_to: localhost
+
+# - name: save worker token
+#   copy:
+#     dest: ./tokens/token-worker
+#     content: "{{ token.swarm_facts.JoinTokens.Worker }}"
+#     mode: '0777'
+#   delegate_to: localhost
