@@ -5,20 +5,25 @@
     advertise_addr: "{{ advertise_addr }}"
   register: token
 
-- name: create directory
-  local_action:
-    module: file
+- name: check directory
+  file:
     path: ./tokens
     state: directory
-    
+    mode: '0777'
+  delegate_to: localhost
+  notify: Test
+
 - name: save manager token
-  local_action:
-    module: copy
+  copy:
     dest: ./tokens/token-manager
     content: "{{ token.swarm_facts.JoinTokens.Manager }}"
+    mode: '0777'
+  delegate_to: localhost
+  notify: Test
 
 - name: save worker token
-  local_action:
-    module: copy
+  copy:
     dest: ./tokens/token-worker
     content: "{{ token.swarm_facts.JoinTokens.Worker }}"
+    mode: '0777'
+  delegate_to: localhost
