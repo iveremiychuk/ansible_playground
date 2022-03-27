@@ -1,0 +1,10 @@
+galaxy_info:
+  role_name: swarm_leave
+  description: docker swarm node leave
+  author: Veremiychuk Ivan (A. Larichev stepik course)
+  license: MIT
+  min_ansible_version: 2.12.1
+  platforms:
+    - name: Ubuntu
+      versions:
+        - All

@@ -1,0 +1,24 @@
+---
+- name: Set "{{ node_name }}" node to drain
+  community.docker.docker_node:
+    hostname: "{{ node_name }}"
+    availability: drain
+  register: result
+
+- name: check for no services running
+  community.docker.docker_host_info:
+    containers: true
+  register: result
+  retries: 30
+  delay: 2
+  until: result.host_info.ContainersRunning == 0
+  delegate_to: "{{ node_name }}"
+
+- name: set node to absent
+  community.docker.docker_swarm:
+    state: absent
+    force: true
+    node_id: "{{ node_name }}"
+  delegate_to: "{{ node_name }}"
+
+
